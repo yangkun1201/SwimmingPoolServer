@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
     public String getVerCode(String phone) throws Exception {
         Long timestamp = System.currentTimeMillis();
         String verCode = timestamp.toString().substring(7,13);
-        SmsUtil.getInstances().sendSms(phone,verCode);
+        //SmsUtil.getInstances().sendSms(phone,verCode);
         return verCode;
     }
 

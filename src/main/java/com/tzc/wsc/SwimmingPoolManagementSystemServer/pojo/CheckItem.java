@@ -6,25 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "user")
+@Table(name = "checkin")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class CheckItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(length = 100)
-    private String username;
-    @Column(length = 20)
+    @Column
     private String phone;
-    @Column(length = 100)
-    private String password;
-    @Column
-    private int gender;
-    @Column
-    private int type;
+    @Column(name = "check_time")
+    private Date checkTime;
+    @Column(name = "check_flag")
+    private int checkFlag;
+    @Column(name = "vercode")
+    private String verCode;
+
+
 }
