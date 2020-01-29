@@ -1,11 +1,16 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.service;
 
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.constant.CheckFlag;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.convertor.CheckInOutTableItemConvertor;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.CheckItem;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.CheckRepository;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.UserRepository;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInOutTableItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +19,9 @@ public class CheckInServiceImpl implements CheckService {
 
     @Autowired
     private CheckRepository checkRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public boolean checkIn(String phone,String verCode) throws Exception {
@@ -49,5 +57,26 @@ public class CheckInServiceImpl implements CheckService {
                 .build();
         checkRepository.save(checkOutItem);
         return true;
+    }
+
+    @Override
+    public boolean phoneHasRegistered(String phone) throws Exception {
+        User user = userRepository.getUserByPhone(phone);
+        if(user != null){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<CheckInOutTableItem> getCheckInOutRecords(int page, int pageSize) {
+        List<CheckInOutTableItem> result = new ArrayList<>();
+        List<Object[]> data = checkRepository.getCheckInOutRecords(page,pageSize);
+        for(Object[] obj:data){
+            CheckInOutTableItemConvertor convertor = new CheckInOutTableItemConvertor();
+            CheckInOutTableItem item = convertor.convert(obj);
+            result.add(item);
+        }
+        return result;
     }
 }

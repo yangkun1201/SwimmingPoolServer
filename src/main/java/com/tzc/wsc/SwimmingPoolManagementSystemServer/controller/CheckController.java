@@ -1,14 +1,13 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.controller;
 
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.service.CheckService;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInOutTableItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -52,6 +51,27 @@ public class CheckController {
         } catch (Exception e) {
             log.error("出馆失败",e);
         }
+        return result;
+    }
+
+    @GetMapping("phoneHasRegistered")
+    public Map<String,String> phoneHasRegistered(@RequestParam String phone){
+        Map<String,String> result = new HashMap<>();
+        try {
+            if(checkService.phoneHasRegistered(phone)){
+                result.put("status","ok");
+            }else{
+                result.put("status","failure");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @GetMapping("getCheckInOutRecords")
+    public List<CheckInOutTableItem> getCheckInOutRecords(@RequestParam int page, @RequestParam int pageSize){
+        List<CheckInOutTableItem> result = checkService.getCheckInOutRecords(page,pageSize);
         return result;
     }
 
