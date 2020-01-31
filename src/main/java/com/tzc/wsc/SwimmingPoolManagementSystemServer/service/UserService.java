@@ -2,6 +2,8 @@ package com.tzc.wsc.SwimmingPoolManagementSystemServer.service;
 
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 
+import java.util.List;
+
 public interface UserService {
 
     public void addUser(User user) throws Exception;
@@ -11,5 +13,7 @@ public interface UserService {
     public String getVerCode(String phone) throws Exception;
 
     public User getUserByPhone(String phone) throws Exception;
+
+    public List<User> getUsers(String username,String phone,int page,int pageSize) throws Exception;
 
 }

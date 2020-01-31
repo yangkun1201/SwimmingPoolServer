@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -84,6 +85,17 @@ public class UserController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @GetMapping(value = "getUsers")
+    public List<User> getUsers(@RequestParam String username,@RequestParam String phone,@RequestParam int page,@RequestParam int pageSize){
+        List<User> users = null;
+        try {
+            users = userService.getUsers(username,phone, page, pageSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
 }
