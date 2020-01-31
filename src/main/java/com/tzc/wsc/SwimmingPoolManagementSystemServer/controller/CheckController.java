@@ -1,5 +1,6 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.controller;
 
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.CheckItem;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.service.CheckService;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInOutTableItem;
 import lombok.extern.slf4j.Slf4j;
@@ -70,8 +71,8 @@ public class CheckController {
     }
 
     @GetMapping("getCheckInOutRecords")
-    public List<CheckInOutTableItem> getCheckInOutRecords(@RequestParam int page, @RequestParam int pageSize){
-        List<CheckInOutTableItem> result = checkService.getCheckInOutRecords(page,pageSize);
+    public List<CheckItem> getCheckInOutRecords(@RequestParam String phone, @RequestParam String vercode, @RequestParam int page, @RequestParam int pageSize){
+        List<CheckItem> result = checkService.getCheckInOutRecords(phone,vercode,page,pageSize);
         return result;
     }
 

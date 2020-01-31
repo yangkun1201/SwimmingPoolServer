@@ -1,16 +1,13 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.service;
 
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.constant.CheckFlag;
-import com.tzc.wsc.SwimmingPoolManagementSystemServer.convertor.CheckInOutTableItemConvertor;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.CheckItem;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.CheckRepository;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.UserRepository;
-import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInOutTableItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,14 +66,18 @@ public class CheckInServiceImpl implements CheckService {
     }
 
     @Override
-    public List<CheckInOutTableItem> getCheckInOutRecords(int page, int pageSize) {
-        List<CheckInOutTableItem> result = new ArrayList<>();
-        List<Object[]> data = checkRepository.getCheckInOutRecords(page,pageSize);
-        for(Object[] obj:data){
-            CheckInOutTableItemConvertor convertor = new CheckInOutTableItemConvertor();
-            CheckInOutTableItem item = convertor.convert(obj);
-            result.add(item);
+    public List<CheckItem> getCheckInOutRecords(String phone, String vercode, int page, int pageSize) {
+        page = page * pageSize;
+        List<CheckItem> data = null;
+        if(phone != "" && vercode != ""){
+            data = checkRepository.getCheckInOutRecords(phone,vercode,page,pageSize);
+        }else if(phone != "" && vercode == ""){
+            data = checkRepository.getCheckInOutRecords(phone,page,pageSize);
+        }else if(phone == "" && vercode != ""){
+            data = checkRepository.getCheckInOutRecords(page,pageSize,vercode);
+        }else{
+            data = checkRepository.getCheckInOutRecords(page,pageSize);
         }
-        return result;
+        return data;
     }
 }

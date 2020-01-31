@@ -15,7 +15,16 @@ public interface CheckRepository extends CrudRepository<CheckItem,Integer> {
 
     public List<CheckItem>  getCheckItemsByVerCodeEqualsOrderByCheckTimeDesc(String verCode);
 
-    @Query(value = "select a.phone,a.vercode,a.check_time check_in_time,b.check_time check_out_time from checkin a,checkin b where a.phone = b.phone and a.vercode = b.vercode and a.check_time < b.check_time limit :page,:pageSize",nativeQuery = true)
-    public List<Object[]> getCheckInOutRecords(@Param("page") int page, @Param("pageSize") int pageSize);
+    @Query(value = "select * from checkin t where phone = :phone and vercode = :vercode order by t.check_time desc limit :page,:pageSize",nativeQuery = true)
+    public List<CheckItem> getCheckInOutRecords(@Param("phone") String phone,@Param("vercode") String vercode, @Param("page") int page, @Param("pageSize") int pageSize);
+
+    @Query(value = "select * from checkin t order by t.check_time desc limit :page,:pageSize",nativeQuery = true)
+    public List<CheckItem> getCheckInOutRecords(@Param("page") int page, @Param("pageSize") int pageSize);
+
+    @Query(value = "select * from checkin t where phone = :phone order by t.check_time desc limit :page,:pageSize",nativeQuery = true)
+    public List<CheckItem> getCheckInOutRecords(@Param("phone") String phone, @Param("page") int page, @Param("pageSize") int pageSize);
+
+    @Query(value = "select * from checkin t where vercode = :vercode order by t.check_time desc limit :page,:pageSize",nativeQuery = true)
+    public List<CheckItem> getCheckInOutRecords(@Param("page") int page, @Param("pageSize") int pageSize,@Param("vercode") String vercode);
 
 }

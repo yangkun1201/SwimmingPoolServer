@@ -1,7 +1,14 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CheckInOutTableItem {
 
     private String phone;
