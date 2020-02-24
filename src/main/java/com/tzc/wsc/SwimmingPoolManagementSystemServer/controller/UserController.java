@@ -98,4 +98,40 @@ public class UserController {
         return users;
     }
 
+    @GetMapping(value = "changeUserInfo")
+    public Map<String,String> changeUserInfo(@RequestParam int id,
+                                             @RequestParam String phone,
+                                             @RequestParam String username,
+                                             @RequestParam int gender,
+                                             @RequestParam int ticketType){
+        Map<String,String> result = new HashMap<>();
+        try {
+            if(userService.changeUserInfo(id,phone,username,gender)){
+                result.put("status","ok");
+                log.info("用户信息修改成功");
+            }else{
+                result.put("status","failure");
+                result.put("desc","手机号码已注册");
+                log.warn("手机号码已注册");
+            }
+        } catch (Exception e) {
+            log.error("用户信息修改失败",e);
+        }
+        return result;
+    }
+
+    @GetMapping(value = "deleteUser")
+    public Map<String,String> deleteUser(@RequestParam int id){
+        Map<String,String> result = new HashMap<>();
+        try {
+            userService.deleteUserById(id);
+            result.put("status","ok");
+            log.info("用户删除成功");
+        } catch (Exception e) {
+            result.put("status","failure");
+            log.error("用户删除失败",e);
+        }
+        return result;
+    }
+
 }

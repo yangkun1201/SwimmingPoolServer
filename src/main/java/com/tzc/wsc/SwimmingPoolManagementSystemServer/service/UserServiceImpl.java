@@ -52,4 +52,24 @@ public class UserServiceImpl implements UserService{
         }
         return users;
     }
+
+    @Override
+    public boolean changeUserInfo(int id, String phone, String username, int gender) throws Exception {
+        User user0 = userRepository.getUserByPhone(phone);
+        if(user0 != null && user0.getId() != id){
+            return false;
+        }
+        User user = userRepository.findById(id).get();
+        user.setPhone(phone);
+        user.setUsername(username);
+        user.setGender(gender);
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean deleteUserById(int id) throws Exception {
+        userRepository.deleteById(id);
+        return true;
+    }
 }

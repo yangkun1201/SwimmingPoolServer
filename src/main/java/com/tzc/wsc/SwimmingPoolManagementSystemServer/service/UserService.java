@@ -16,4 +16,8 @@ public interface UserService {
 
     public List<User> getUsers(String username,String phone,int page,int pageSize) throws Exception;
 
+    public boolean changeUserInfo(int id,String phone,String username,int gender) throws Exception;
+
+    public boolean deleteUserById(int id) throws Exception;
+
 }
