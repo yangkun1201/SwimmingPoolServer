@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface CardService {
 
-    boolean addCard(int type,String desc);
+    boolean addCard(int type,String desc,String picUrl);
 
-    boolean deleteCard(int id);
+    boolean deleteCard(int type);
 
     List<CardType> getAllCardTypes();
 

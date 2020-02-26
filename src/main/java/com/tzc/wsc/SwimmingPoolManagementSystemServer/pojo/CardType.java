@@ -21,4 +21,7 @@ public class CardType {
     int type;
     @Column
     String description;
+    @Column(columnDefinition = "pic_url")
+    String picUrl;
+
 }
