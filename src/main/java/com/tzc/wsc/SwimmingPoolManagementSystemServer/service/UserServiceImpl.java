@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean changeUserInfo(int id, String phone, String username, int gender) throws Exception {
+    public boolean changeUserInfo(int id, String phone, String username, int gender,int cardType) throws Exception {
         User user0 = userRepository.getUserByPhone(phone);
         if(user0 != null && user0.getId() != id){
             return false;
@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService{
         user.setPhone(phone);
         user.setUsername(username);
         user.setGender(gender);
+        user.setCardType(cardType);
         userRepository.save(user);
         return true;
     }

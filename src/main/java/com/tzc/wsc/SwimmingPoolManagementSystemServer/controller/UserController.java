@@ -103,10 +103,10 @@ public class UserController {
                                              @RequestParam String phone,
                                              @RequestParam String username,
                                              @RequestParam int gender,
-                                             @RequestParam int ticketType){
+                                             @RequestParam int cardType){
         Map<String,String> result = new HashMap<>();
         try {
-            if(userService.changeUserInfo(id,phone,username,gender)){
+            if(userService.changeUserInfo(id,phone,username,gender,cardType)){
                 result.put("status","ok");
                 log.info("用户信息修改成功");
             }else{

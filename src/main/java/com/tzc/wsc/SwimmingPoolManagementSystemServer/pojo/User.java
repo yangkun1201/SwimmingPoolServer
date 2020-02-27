@@ -27,4 +27,8 @@ public class User {
     private int gender;
     @Column
     private int type;
+    @Column(columnDefinition = "card_type")
+    int cardType;
+    @Column
+    int integral;
 }

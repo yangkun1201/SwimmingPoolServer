@@ -4,7 +4,9 @@ create table user(
     phone varchar(20),
     password varchar(100),
     gender int,
-    type int
+    type int,
+    card_type int default 0,
+    integral int default 0
 )charset utf8;
 
 create table checkin(
