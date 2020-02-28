@@ -11,6 +11,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,10 @@ public class SmsUtil {
 
     private Logger logger = LoggerFactory.getLogger(SmsUtil.class);
     private volatile static SmsUtil instances;
+    @Value("")
+    private String accessKeyId;
+    @Value("")
+    private String secret;
 
     public static SmsUtil getInstances() {
         if(instances == null){
@@ -40,7 +45,7 @@ public class SmsUtil {
         data.put("code",message);
         String templateParam = gson.toJson(data);
 
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAIiY3klMjraJmZ", "c0A5dWVuOgaNNmiw3Szp69wLY1dVMe");
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, secret);
         IAcsClient client = new DefaultAcsClient(profile);
 
         CommonRequest request = new CommonRequest();
