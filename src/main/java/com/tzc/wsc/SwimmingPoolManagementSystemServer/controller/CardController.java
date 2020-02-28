@@ -69,6 +69,7 @@ public class CardController {
     @PostMapping("uploadCardPic")
     public Map<String,String> uploadCardPic(@RequestParam MultipartFile pic,@RequestParam String picName){
         Map<String,String> result = new HashMap<>();
+        picName = String.format("%d_%s",System.currentTimeMillis(),picName);
         String picUrl = cardPicRelativePath+picName;
         File saveFile = new File(cardPicPath,picName);
         try {
