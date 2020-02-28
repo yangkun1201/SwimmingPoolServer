@@ -18,14 +18,9 @@ class SwimmingPoolManagementSystemServerApplicationTests {
 
 	@Test
 	public void test(){
-		User user = User.builder()
-				.username("小明")
-				.phone("13589377824")
-				.password("123456")
-				.gender(0)
-				.type(0)
-				.build();
-		userRepository.save(user);
+		String picName = "a.jpg";
+		picName = String.format("%d_%s",System.currentTimeMillis(),picName);
+		System.out.print(picName);
 	}
 
 

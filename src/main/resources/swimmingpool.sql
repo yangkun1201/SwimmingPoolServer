@@ -23,3 +23,10 @@ create table card_type(
     description varchar(50) comment '票卡名称',
     pic_url varchar(200) comment '票卡图片地址'
 )charset utf8;
+
+create table commodity(
+    id int primary key auto_increment,
+    name varchar(200) comment '商品名称',
+    price int comment '价格',
+    pic_url varchar(200) comment '商品图片地址'
+)charset utf8;
