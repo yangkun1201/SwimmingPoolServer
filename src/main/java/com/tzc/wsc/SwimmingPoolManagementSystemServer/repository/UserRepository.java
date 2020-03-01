@@ -26,4 +26,7 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     @Query(value = "select * from user where type = :type limit :page,:pageSize",nativeQuery = true)
     public List<User> getUsersByType(int type,int page,int pageSize);
 
+    @Query(value = "select id from user u where u.username = :username",nativeQuery = true)
+    public List<Integer> getUserIdByUsername(String username);
+
 }
