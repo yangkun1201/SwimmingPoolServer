@@ -30,3 +30,10 @@ create table commodity(
     price int comment '价格',
     pic_url varchar(200) comment '商品图片地址'
 )charset utf8;
+
+create table exchange_records(
+    id int primary key auto_increment,
+    user_id int comment '用户id',
+    commodity_id int comment '商品id',
+    time timestamp comment '兑换时间'
+)charset utf8;
