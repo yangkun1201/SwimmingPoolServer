@@ -1,18 +1,22 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.service;
 
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.constant.CheckFlag;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.constant.Gender;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.CheckItem;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.CheckRepository;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.UserRepository;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInCountNearWeekItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class CheckInServiceImpl implements CheckService {
+public class CheckServiceImpl implements CheckService {
 
     @Autowired
     private CheckRepository checkRepository;
@@ -79,5 +83,31 @@ public class CheckInServiceImpl implements CheckService {
             data = checkRepository.getCheckInOutRecords(page,pageSize);
         }
         return data;
+    }
+
+    @Override
+    public int getPeopleCountToday(int gender) {
+        if(gender == Gender.MALE){
+            return checkRepository.getMaleCountToday();
+        }else if(gender == Gender.FEMALE){
+            return checkRepository.getFemaleCountToday();
+        }
+        return 0;
+    }
+
+    @Override
+    public List<CheckInCountNearWeekItem> getCheckInCountNearWeek() {
+        List<CheckInCountNearWeekItem> list = new ArrayList<>();
+        List<Object[]> srcData = checkRepository.getCheckInCountNearWeek();
+        if(srcData != null && srcData.size() > 0){
+            for(Object[] obj:srcData){
+                CheckInCountNearWeekItem cItem = CheckInCountNearWeekItem.builder()
+                        .date(((String)obj[0]))
+                        .count(((BigInteger) obj[1]).intValue())
+                        .build();
+                list.add(cItem);
+            }
+        }
+        return list;
     }
 }

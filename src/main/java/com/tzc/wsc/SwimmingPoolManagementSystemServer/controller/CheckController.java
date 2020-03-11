@@ -1,12 +1,15 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.controller;
 
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.constant.Gender;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.CheckItem;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.service.CheckService;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInCountNearWeekItem;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInOutTableItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +77,25 @@ public class CheckController {
     public List<CheckItem> getCheckInOutRecords(@RequestParam String phone, @RequestParam String vercode, @RequestParam int page, @RequestParam int pageSize){
         List<CheckItem> result = checkService.getCheckInOutRecords(phone,vercode,page,pageSize);
         return result;
+    }
+
+    @GetMapping("getPeopleCountToday")
+    public List<Map<String,Object>> getPeopleCountToday(){
+        List<Map<String,Object>> result = new ArrayList<>();
+        Map<String,Object> item0 = new HashMap<>();
+        Map<String,Object> item1 = new HashMap<>();
+        item0.put("性别","男");
+        item0.put("数量",checkService.getPeopleCountToday(Gender.MALE));
+        item1.put("性别","女");
+        item1.put("数量",checkService.getPeopleCountToday(Gender.FEMALE));
+        result.add(item0);
+        result.add(item1);
+        return result;
+    }
+
+    @GetMapping("getCheckInCountNearWeek")
+    public List<CheckInCountNearWeekItem> getCheckInCountNearWeek(){
+        return checkService.getCheckInCountNearWeek();
     }
 
 }

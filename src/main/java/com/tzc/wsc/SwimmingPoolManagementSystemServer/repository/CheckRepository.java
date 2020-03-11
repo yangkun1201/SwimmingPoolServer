@@ -27,4 +27,20 @@ public interface CheckRepository extends CrudRepository<CheckItem,Integer> {
     @Query(value = "select * from checkin t where vercode = :vercode order by t.check_time desc limit :page,:pageSize",nativeQuery = true)
     public List<CheckItem> getCheckInOutRecords(@Param("page") int page, @Param("pageSize") int pageSize,@Param("vercode") String vercode);
 
+    @Query(value = "select count(c.phone) from checkin c,user u where c.check_flag = 0 and u.gender = 0 and c.phone = u.phone and c.check_time > curdate()", nativeQuery = true)
+    public int getMaleCountToday();
+
+    @Query(value = "select count(c.phone) from checkin c,user u where c.check_flag = 0 and u.gender = 1 and c.phone = u.phone and c.check_time > curdate()", nativeQuery = true)
+    public int getFemaleCountToday();
+
+    @Query(value = "select\n" +
+            "date_format(c.check_time,'%Y-%m-%d') as date,\n" +
+            "count(c.phone) as num\n" +
+            "from checkin c\n" +
+            "where c.check_flag = 0\n" +
+            "and c.check_time > date_sub(curdate(),interval 1 week)\n" +
+            "group by date_format(c.check_time,'%Y-%m-%d')\n" +
+            "order by date_format(c.check_time,'%Y-%m-%d')",nativeQuery = true)
+    public List<Object[]> getCheckInCountNearWeek();
+
 }
