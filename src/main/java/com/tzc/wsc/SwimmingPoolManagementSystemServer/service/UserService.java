@@ -20,4 +20,6 @@ public interface UserService {
 
     public boolean deleteUserById(int id) throws Exception;
 
+    public void changeUserCardType(String phone,int cardType) throws Exception;
+
 }

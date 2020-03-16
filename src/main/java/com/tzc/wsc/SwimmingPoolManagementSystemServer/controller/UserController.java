@@ -134,4 +134,18 @@ public class UserController {
         return result;
     }
 
+    @GetMapping("changeUserCardType")
+    public Map<String,String> changeUserCardType(@RequestParam String phone,@RequestParam int cardType){
+        Map<String,String> result = new HashMap<>();
+        try {
+            userService.changeUserCardType(phone, cardType);
+            log.info("票卡类型更新成功,用户:{},票卡类型:{}",phone,cardType);
+            result.put("status","ok");
+        } catch (Exception e) {
+            log.error("票卡类型更新失败",e);
+            result.put("status","failure");
+        }
+        return result;
+    }
+
 }

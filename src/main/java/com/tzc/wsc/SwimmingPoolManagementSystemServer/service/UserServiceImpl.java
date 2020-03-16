@@ -73,4 +73,13 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteById(id);
         return true;
     }
+
+    @Override
+    public void changeUserCardType(String phone, int cardType) throws Exception {
+        User user = userRepository.getUserByPhone(phone);
+        if(user != null){
+            user.setCardType(cardType);
+            userRepository.save(user);
+        }
+    }
 }
