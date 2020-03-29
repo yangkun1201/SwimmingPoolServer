@@ -6,6 +6,7 @@ import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,7 +26,12 @@ public class UserController {
         try {
             userService.addUser(user);
             log.info("用户注册成功:{}",user);
-        }catch (Exception e){
+        }
+        catch (DataIntegrityViolationException e){
+            log.warn("用户已注册");
+            return HttpResponseCode.USER_EXIST;
+        }
+        catch (Exception e){
             log.error("用户注册失败",e);
             return HttpResponseCode.FAILURE;
         }
@@ -33,10 +39,10 @@ public class UserController {
     }
 
     @PostMapping(value = "login")
-    public Map<String,Integer> login(@RequestBody Map requestBody){
+    public Map<String,Object> login(@RequestBody Map requestBody){
         String username = ((String) requestBody.get("username"));
         String password = ((String) requestBody.get("password"));
-        Map<String,Integer> loginResult = new HashMap<>();
+        Map<String,Object> loginResult = new HashMap<>();
         try {
             User user = userService.getUserByName(username);
             if(user == null){
@@ -46,6 +52,7 @@ public class UserController {
                 log.info("登录成功");
                 loginResult.put("login_status", LoginStatus.LOGIN_SUCCESS);
                 loginResult.put("user_type",user.getType());
+                loginResult.put("user_info",user);
             }else{
                 log.info("登录失败，密码错误");
                 loginResult.put("login_status", LoginStatus.LOGIN_FAILURE);
@@ -69,8 +76,8 @@ public class UserController {
     }
 
     @GetMapping(value = "loginByVerCode")
-    public Map<String,Integer> loginByVerCode(@RequestParam String phone){
-        Map<String,Integer> result = new HashMap<>();
+    public Map<String,Object> loginByVerCode(@RequestParam String phone){
+        Map<String,Object> result = new HashMap<>();
         try {
             User user = userService.getUserByPhone(phone);
             if(user == null){
@@ -80,6 +87,7 @@ public class UserController {
                 log.info("登录成功");
                 result.put("login_status", LoginStatus.LOGIN_SUCCESS);
                 result.put("user_type",user.getType());
+                result.put("user_info",user);
             }
         } catch (Exception e) {
             e.printStackTrace();

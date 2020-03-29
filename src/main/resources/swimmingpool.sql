@@ -1,12 +1,12 @@
 create table user(
     id int primary key auto_increment,
-    username varchar(100),
-    phone varchar(20),
-    password varchar(100),
-    gender int,
-    type int,
-    card_type int default 0,
-    integral int default 0
+    username varchar(100) comment '用户名',
+    phone varchar(20) unique comment '手机号',
+    password varchar(100) comment '密码',
+    gender int comment '性别 0:男, 1:女',
+    type int comment '用户类别 0:普通用户, 1:管理员',
+    card_type int default 0 comment '票卡类型',
+    integral int default 0 comment '积分'
 )charset utf8;
 
 create table checkin(

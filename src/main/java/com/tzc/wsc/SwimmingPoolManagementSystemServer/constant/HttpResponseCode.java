@@ -6,4 +6,6 @@ public class HttpResponseCode {
 
     public static final String FAILURE = "failure";
 
+    public static final String USER_EXIST = "userExist";
+
 }
