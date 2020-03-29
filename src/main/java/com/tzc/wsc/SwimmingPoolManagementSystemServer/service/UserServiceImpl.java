@@ -14,6 +14,9 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SmsUtil smsUtil;
+
     @Override
     public void addUser(User user) throws Exception {
         userRepository.save(user);
@@ -28,7 +31,7 @@ public class UserServiceImpl implements UserService{
     public String getVerCode(String phone) throws Exception {
         Long timestamp = System.currentTimeMillis();
         String verCode = timestamp.toString().substring(7,13);
-        //SmsUtil.getInstances().sendSms(phone,verCode);
+        smsUtil.sendSms(phone,verCode);
         return verCode;
     }
 

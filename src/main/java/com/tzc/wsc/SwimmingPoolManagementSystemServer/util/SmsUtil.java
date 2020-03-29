@@ -9,34 +9,26 @@ import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
+@Component
 public class SmsUtil {
 
-    private Logger logger = LoggerFactory.getLogger(SmsUtil.class);
-    private volatile static SmsUtil instances;
-    @Value("")
+    @Value("${aliyun.accessKeyId}")
     private String accessKeyId;
-    @Value("")
+    @Value("${aliyun.secret}")
     private String secret;
 
-    public static SmsUtil getInstances() {
-        if(instances == null){
-            synchronized (SmsUtil.class){
-                if(instances == null){
-                    instances = new SmsUtil();
-                }
-            }
-        }
-        return instances;
-    }
-
     public String sendSms(String phone,String message){
+
+        log.info("accessKeyId: {}",accessKeyId);
+        log.info("secret: {}",secret);
 
         String sendResult = "";
 
@@ -61,9 +53,8 @@ public class SmsUtil {
         request.putQueryParameter("TemplateParam", templateParam);
         try {
             CommonResponse response = client.getCommonResponse(request);
-            //System.out.println(response.getData());
             sendResult = response.getData();
-            logger.info(sendResult);
+            log.info(sendResult);
         } catch (ServerException e) {
             e.printStackTrace();
         } catch (ClientException e) {
