@@ -22,4 +22,6 @@ public interface UserService {
 
     public void changeUserCardType(String phone,int cardType) throws Exception;
 
+    public int getIntegralByUserId(int userId) throws Exception;
+
 }

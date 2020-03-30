@@ -23,5 +23,6 @@ public class ExchangeRecords {
     @Column(columnDefinition = "commodity_id")
     private int commodityId;
     private Date time;
+    private String address;
 
 }

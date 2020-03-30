@@ -35,5 +35,6 @@ create table exchange_records(
     id int primary key auto_increment,
     user_id int comment '用户id',
     commodity_id int comment '商品id',
-    time timestamp comment '兑换时间'
+    time timestamp comment '兑换时间',
+    address varchar(300) comment '地址'
 )charset utf8;

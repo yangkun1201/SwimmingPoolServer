@@ -156,4 +156,19 @@ public class UserController {
         return result;
     }
 
+    @GetMapping("getIntegralByUserId")
+    public Map<String,Object> getIntegralByUserId(@RequestParam int userId){
+        Map<String,Object> result = new HashMap<>();
+        try {
+            int integral = userService.getIntegralByUserId(userId);
+            log.info("查询积分成功");
+            result.put("status","ok");
+            result.put("integral",integral);
+        } catch (Exception e) {
+            log.error("查询积分失败",e);
+            result.put("status","failure");
+        }
+        return result;
+    }
+
 }

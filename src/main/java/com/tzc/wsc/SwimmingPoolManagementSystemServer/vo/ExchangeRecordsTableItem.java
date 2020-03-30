@@ -17,4 +17,5 @@ public class ExchangeRecordsTableItem {
     private String username;
     private String commodityName;
     private Date time;
+    private String address;
 }

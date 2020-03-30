@@ -1,5 +1,7 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.service;
 
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.ExchangeRecords;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.ExchangeRecordsRepository;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.UserRepository;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.ExchangeRecordsTableItem;
@@ -39,10 +41,26 @@ public class ExchangeRecordsServiceImpl implements ExchangeRecordsService{
                     .username(((String) item[1]))
                     .commodityName(((String) item[2]))
                     .time(((Date) item[3]))
+                    .address(((String) item[4]))
                     .build();
             resultData.add(exchangeRecordsTableItem);
         }
         return resultData;
     }
 
+    @Override
+    public void addExchangeRecords(int userId, int commodityId, int integral, String address) throws Exception {
+        User user = userRepository.findById(userId).get();
+        user.setIntegral(user.getIntegral() - integral);
+        userRepository.save(user);
+
+        ExchangeRecords exchangeRecords = ExchangeRecords.builder()
+                .userId(userId)
+                .commodityId(commodityId)
+                .time(new Date())
+                .address(address)
+                .build();
+        exchangeRecordsRepository.save(exchangeRecords);
+
+    }
 }
