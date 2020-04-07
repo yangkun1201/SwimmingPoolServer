@@ -38,6 +38,10 @@ public class CheckServiceImpl implements CheckService {
             return false;
         }
         checkRepository.save(checkItem);
+
+        User user = userRepository.getUserByPhone(phone);
+        user.setIntegral(user.getIntegral() + 10);
+        userRepository.save(user);
         return true;
     }
 
