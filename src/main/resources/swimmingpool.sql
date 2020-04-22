@@ -20,7 +20,9 @@ create table checkin(
 create table card_type(
     id int primary key auto_increment,
     type int unique comment '票卡类型',
-    description varchar(50) comment '票卡名称',
+    name varchar(50) comment '票卡名称',
+    description varchar(200) comment '票卡描述',
+    price int comment '票卡价格',
     pic_url varchar(200) comment '票卡图片地址'
 )charset utf8;
 
