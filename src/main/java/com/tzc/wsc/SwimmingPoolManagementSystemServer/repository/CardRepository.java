@@ -15,7 +15,7 @@ public interface CardRepository extends CrudRepository<CardType,Integer> {
     @Query(value = "from CardType t order by t.id")
     List<CardType> getCardTypes();
 
-    @Query(value = "delete from card_type t where t.type=:type",nativeQuery = true)
+    @Query(value = "delete from card_type where type=:type",nativeQuery = true)
     @Modifying
     void deleteCardTypeByType(@Param("type") int type);
 

@@ -20,7 +20,11 @@ public class CardType {
     @Column
     int type;
     @Column
+    String name;
+    @Column
     String description;
+    @Column
+    int price;
     @Column(columnDefinition = "pic_url")
     String picUrl;
 

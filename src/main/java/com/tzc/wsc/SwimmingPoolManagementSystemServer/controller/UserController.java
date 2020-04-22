@@ -4,9 +4,11 @@ import com.tzc.wsc.SwimmingPoolManagementSystemServer.constant.HttpResponseCode;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.constant.LoginStatus;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.service.UserService;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -96,14 +98,19 @@ public class UserController {
     }
 
     @GetMapping(value = "getUsers")
-    public List<User> getUsers(@RequestParam String username,@RequestParam String phone,@RequestParam int page,@RequestParam int pageSize){
-        List<User> users = null;
+    public PageVo getUsers(@RequestParam String username,@RequestParam String phone,@RequestParam int page,@RequestParam int pageSize){
+        Page<List<User>> users = null;
+        PageVo pageVo = null;
         try {
             users = userService.getUsers(username,phone, page, pageSize);
+            pageVo = PageVo.builder()
+                    .data(users.getContent())
+                    .totalPage(users.getTotalPages())
+                    .build();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return users;
+        return pageVo;
     }
 
     @GetMapping(value = "changeUserInfo")
@@ -170,5 +177,17 @@ public class UserController {
         }
         return result;
     }
+
+    @GetMapping("getCardTypeByPhone")
+    public int getCardTypeByPhone(@RequestParam String phone){
+       int result = 0;
+        try {
+            result = userService.getCardTypeByPhone(phone);
+        } catch (Exception e) {
+
+        }
+        return result;
+    }
+
 
 }

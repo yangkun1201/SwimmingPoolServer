@@ -3,6 +3,8 @@ package com.tzc.wsc.SwimmingPoolManagementSystemServer.service;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.Commodity;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.CommodityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +21,9 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     @Override
-    public List<Commodity> getAllCommodities(int page, int pageSize) {
-        int offset = page*pageSize;
-        return commodityRepository.getAllCommodities(offset,pageSize);
+    public Page<List<Commodity>> getAllCommodities(int page, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(page,pageSize);
+        return commodityRepository.getAllCommodities(pageRequest);
     }
 
     @Override

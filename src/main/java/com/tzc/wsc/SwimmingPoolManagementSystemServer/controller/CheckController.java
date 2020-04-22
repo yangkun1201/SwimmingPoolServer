@@ -5,8 +5,10 @@ import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.CheckItem;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.service.CheckService;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInCountNearWeekItem;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInOutTableItem;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -74,9 +76,13 @@ public class CheckController {
     }
 
     @GetMapping("getCheckInOutRecords")
-    public List<CheckItem> getCheckInOutRecords(@RequestParam String phone, @RequestParam String vercode, @RequestParam int page, @RequestParam int pageSize){
-        List<CheckItem> result = checkService.getCheckInOutRecords(phone,vercode,page,pageSize);
-        return result;
+    public PageVo getCheckInOutRecords(@RequestParam String phone, @RequestParam String vercode, @RequestParam int page, @RequestParam int pageSize){
+        Page<List<CheckItem>> result = checkService.getCheckInOutRecords(phone,vercode,page,pageSize);
+        PageVo pageVo = PageVo.builder()
+                .data(result.getContent())
+                .totalPage(result.getTotalPages())
+                .build();
+        return pageVo;
     }
 
     @GetMapping("getPeopleCountToday")

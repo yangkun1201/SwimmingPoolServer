@@ -1,12 +1,9 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.service;
 
-import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.ExchangeRecordsTableItem;
-
-import javax.xml.crypto.Data;
-import java.util.List;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.PageVo;
 
 public interface ExchangeRecordsService {
-    List<ExchangeRecordsTableItem> getExchangeRecords(String username,int page,int pageSize) throws Exception;
+    PageVo getExchangeRecords(String username, int page, int pageSize) throws Exception;
 
     void addExchangeRecords(int userId, int commodityId,int integral,String address) throws Exception;
 

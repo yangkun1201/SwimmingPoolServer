@@ -1,6 +1,7 @@
 package com.tzc.wsc.SwimmingPoolManagementSystemServer.service;
 
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface UserService {
 
     public User getUserByPhone(String phone) throws Exception;
 
-    public List<User> getUsers(String username,String phone,int page,int pageSize) throws Exception;
+    public Page<List<User>> getUsers(String username, String phone, int page, int pageSize) throws Exception;
 
     public boolean changeUserInfo(int id,String phone,String username,int gender,int cardType) throws Exception;
 
@@ -23,5 +24,7 @@ public interface UserService {
     public void changeUserCardType(String phone,int cardType) throws Exception;
 
     public int getIntegralByUserId(int userId) throws Exception;
+
+    public int getCardTypeByPhone(String phone) throws Exception;
 
 }

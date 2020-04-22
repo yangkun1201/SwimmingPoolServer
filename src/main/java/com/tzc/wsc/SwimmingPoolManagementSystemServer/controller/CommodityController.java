@@ -2,9 +2,11 @@ package com.tzc.wsc.SwimmingPoolManagementSystemServer.controller;
 
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.Commodity;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.service.CommodityService;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,15 +70,20 @@ public class CommodityController {
     }
 
     @GetMapping("getAllCommodities")
-    public List<Commodity> getAllCommodities(int page, int pageSize){
-        List<Commodity> list = null;
+    public PageVo getAllCommodities(int page, int pageSize){
+        Page<List<Commodity>> list = null;
+        PageVo pageVo = null;
         try {
             list = commodityService.getAllCommodities(page,pageSize);
+            pageVo = PageVo.builder()
+                    .data(list.getContent())
+                    .totalPage(list.getTotalPages())
+                    .build();
             log.info("商品信息查询成功");
         } catch (Exception e) {
             log.error("商品信息查询失败",e);
         }
-        return list;
+        return pageVo;
     }
 
     @GetMapping("deleteCommodityById")

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +31,14 @@ public class CardController {
     private String cardPicRelativePath;
 
     @GetMapping("addCard")
-    public Map<String,String> addCard(@RequestParam int type,@RequestParam String desc,@RequestParam String picUrl){
+    public Map<String,String> addCard(@RequestParam int type,
+                                      @RequestParam String name,
+                                      @RequestParam String desc,
+                                      @RequestParam int price,
+                                      @RequestParam String picUrl){
         Map<String,String> result = new HashMap<>();
         try{
-            cardService.addCard(type,desc,picUrl);
+            cardService.addCard(type,name,desc,price,picUrl);
             result.put("status","ok");
         }catch (DataIntegrityViolationException e){
             result.put("status","failure");
@@ -82,6 +87,28 @@ public class CardController {
             log.info("票卡图片上传失败",e);
         }
         return result;
+    }
+
+    @GetMapping("getTypes")
+    public List<Map<String,Object>> getAllCardType(){
+        List<Map<String,Object>> data = new ArrayList<>();
+        Map<String,Object> m0 = new HashMap<>();
+        m0.put("id","0");
+        m0.put("name","单次票");
+        data.add(m0);
+        Map<String,Object> m1 = new HashMap<>();
+        m1.put("id","1");
+        m1.put("name","周卡");
+        data.add(m1);
+        Map<String,Object> m2 = new HashMap<>();
+        m2.put("id","2");
+        m2.put("name","月卡");
+        data.add(m2);
+        Map<String,Object> m3 = new HashMap<>();
+        m3.put("id","3");
+        m3.put("name","年卡");
+        data.add(m3);
+        return data;
     }
 
 }

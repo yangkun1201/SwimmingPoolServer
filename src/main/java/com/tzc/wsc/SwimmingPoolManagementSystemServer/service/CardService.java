@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CardService {
 
-    boolean addCard(int type,String desc,String picUrl);
+    boolean addCard(int type,String name,String desc,int price,String picUrl);
 
     boolean deleteCard(int type);
 

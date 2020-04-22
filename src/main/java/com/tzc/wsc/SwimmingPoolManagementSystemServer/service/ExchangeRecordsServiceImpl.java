@@ -5,13 +5,17 @@ import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.ExchangeRecordsRepository;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.UserRepository;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.ExchangeRecordsTableItem;
+import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.PageVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -24,28 +28,37 @@ public class ExchangeRecordsServiceImpl implements ExchangeRecordsService{
     private UserRepository userRepository;
 
     @Override
-    public List<ExchangeRecordsTableItem> getExchangeRecords(String username, int page, int pageSize) throws Exception {
-        List<Object[]> tempList = new ArrayList<>();
+    public PageVo getExchangeRecords(String username, int page, int pageSize) throws Exception {
+        PageVo pageVo = null;
+        Page<Map<String,Object>> pageResult = null;
+        List<Map<String,Object>> tempList = null;
         List<ExchangeRecordsTableItem> resultData = new ArrayList<>();
         List<Integer> userIds = userRepository.getUserIdByUsername(username);
-        page = page*pageSize;
+        PageRequest pageRequest = PageRequest.of(page,pageSize);
         if(username.equals("")){
-            tempList = exchangeRecordsRepository.getAllExchangeRecords(page,pageSize);
+            pageResult = exchangeRecordsRepository.getAllExchangeRecords(pageRequest);
         }else if(userIds != null && userIds.size()>0){
             int userId = userIds.get(0);
-            tempList = exchangeRecordsRepository.getExchangeRecordsByUserId(userId,page,pageSize);
+            pageResult = exchangeRecordsRepository.getExchangeRecordsByUserId(userId,pageRequest);
         }
-        for(Object[] item:tempList){
-            ExchangeRecordsTableItem exchangeRecordsTableItem = ExchangeRecordsTableItem.builder()
-                    .id(((int) item[0]))
-                    .username(((String) item[1]))
-                    .commodityName(((String) item[2]))
-                    .time(((Date) item[3]))
-                    .address(((String) item[4]))
-                    .build();
-            resultData.add(exchangeRecordsTableItem);
+        if(pageResult.getContent().size()>0) {
+            tempList = pageResult.getContent();
+            for (Map<String,Object> item : tempList) {
+                ExchangeRecordsTableItem exchangeRecordsTableItem = ExchangeRecordsTableItem.builder()
+                        .id(((int) item.get("id")))
+                        .username(((String)item.get("username")))
+                        .commodityName(((String)item.get("name")))
+                        .time(((Date)item.get("time")))
+                        .address(((String) item.get("address")))
+                        .build();
+                resultData.add(exchangeRecordsTableItem);
+            }
         }
-        return resultData;
+        pageVo = PageVo.builder()
+                .data(resultData)
+                .totalPage(pageResult.getTotalPages())
+                .build();
+        return pageVo;
     }
 
     @Override

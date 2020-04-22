@@ -15,10 +15,12 @@ public class CardServiceImpl implements CardService {
     private CardRepository cardRepository;
 
     @Override
-    public boolean addCard(int type, String desc,String picUrl) {
+    public boolean addCard(int type,String name,String desc,int price,String picUrl) {
         CardType cardType = CardType.builder()
                 .type(type)
+                .name(name)
                 .description(desc)
+                .price(price)
                 .picUrl(picUrl)
                 .build();
         cardRepository.save(cardType);

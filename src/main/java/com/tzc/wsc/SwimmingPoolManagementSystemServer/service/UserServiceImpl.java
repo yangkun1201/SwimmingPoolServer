@@ -4,6 +4,8 @@ import com.tzc.wsc.SwimmingPoolManagementSystemServer.pojo.User;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.UserRepository;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.util.SmsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,17 +43,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> getUsers(String username,String phone,int page,int pageSize) throws Exception {
-        List<User> users = null;
-        page = page * pageSize;
+    public Page<List<User>> getUsers(String username, String phone, int page, int pageSize) throws Exception {
+        Page<List<User>> users = null;
+        PageRequest pageRequest = PageRequest.of(page,pageSize);
         if(username != "" && phone != ""){
-            users = userRepository.getUsersByUsernameAndPhoneAndType(username,phone,0, page, pageSize);
+            users = userRepository.getUsersByUsernameAndPhoneAndType(username,phone,0, pageRequest);
         }else if(username != "" && phone == ""){
-            users = userRepository.getUsersByUsernameAndType(username,0, page, pageSize);
+            users = userRepository.getUsersByUsernameAndType(username,0, pageRequest);
         }else if(username == "" && phone != ""){
-            users = userRepository.getUsersByPhoneAndType(phone,0, page, pageSize);
+            users = userRepository.getUsersByPhoneAndType(phone,0, pageRequest);
         }else{
-            users = userRepository.getUsersByType(0,page, pageSize);
+            users = userRepository.getUsersByType(0,pageRequest);
         }
         return users;
     }
@@ -90,5 +92,10 @@ public class UserServiceImpl implements UserService{
     public int getIntegralByUserId(int userId) throws Exception {
         User user = userRepository.findById(userId).get();
         return user.getIntegral();
+    }
+
+    @Override
+    public int getCardTypeByPhone(String phone) throws Exception {
+        return userRepository.getCardTypeByPhone(phone);
     }
 }

@@ -8,6 +8,8 @@ import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.CheckRepository
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.repository.UserRepository;
 import com.tzc.wsc.SwimmingPoolManagementSystemServer.vo.CheckInCountNearWeekItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -74,17 +76,17 @@ public class CheckServiceImpl implements CheckService {
     }
 
     @Override
-    public List<CheckItem> getCheckInOutRecords(String phone, String vercode, int page, int pageSize) {
-        page = page * pageSize;
-        List<CheckItem> data = null;
+    public Page<List<CheckItem>> getCheckInOutRecords(String phone, String vercode, int page, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(page,pageSize);
+        Page<List<CheckItem>> data = null;
         if(phone != "" && vercode != ""){
-            data = checkRepository.getCheckInOutRecords(phone,vercode,page,pageSize);
+            data = checkRepository.getCheckInOutRecords(phone,vercode,pageRequest);
         }else if(phone != "" && vercode == ""){
-            data = checkRepository.getCheckInOutRecords(phone,page,pageSize);
+            data = checkRepository.getCheckInOutRecords(phone,pageRequest);
         }else if(phone == "" && vercode != ""){
-            data = checkRepository.getCheckInOutRecords(page,pageSize,vercode);
+            data = checkRepository.getCheckInOutRecords(pageRequest,vercode);
         }else{
-            data = checkRepository.getCheckInOutRecords(page,pageSize);
+            data = checkRepository.getCheckInOutRecords(pageRequest);
         }
         return data;
     }
